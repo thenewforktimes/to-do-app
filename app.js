@@ -1,52 +1,48 @@
-window.onload = function() {
-  //alert('The Window Has Loaded!!'); works!
-  onready();
-};
+function onReady() {
+  var toDos = [];
+  var addToDoForm = document.getElementById('addToDoForm');
 
-function onready(){
-  const addToDoForm = document.getElementById('addToDoForm');
-  const newToDoText = document.getElementById('newToDoText');
-  const toDoList = document.getElementById('toDoList');
-  const deleteButton = document.getElementById('deleteButton');
+function createNewToDo() {
+    let newToDoText = document.getElementById('newToDoText');
+    toDos.push({
+      title: newToDoText.value,
+      complete: false
+    });
+    newToDoText.value = '';
+    renderTheUI(toDos);
+  }
 
+function renderTheUI(toDos) {
+    let todoList = document.getElementById('toDoList');
+    toDoList.innerHTML = '';
+
+    toDos.forEach(function(toDo) {
+      let newLi = document.createElement('li');
+      let checkbox = document.createElement('input');
+      checkbox.type = "checkbox";
+
+      newLi.innerHTML = toDo.title;
+      todoList.appendChild(newLi);
+      newLi.appendChild(checkbox);
+    });
+  }
   addToDoForm.addEventListener('submit', (event) => {
     event.preventDefault();
-
-    // get the text
-    let title = newToDoText.value;
-
-    // create a new li
-    let newLi = document.createElement('li');
-
-    // create a new input for the checkbox
-    let checkbox = document.createElement('input');
-
-    // set the input's type to checkbox
-    checkbox.type = "checkbox";
-
-    // set the title
-    newLi.textContent = title;
-
-    // attach it to the ul
-    toDoList.appendChild(newLi);
-
-    // attach the checkbox to the li
-    newLi.appendChild(checkbox);
-
-    //attach deleteButton
-    toDoList.appendChild(deleteButton);
-
-    //empty the input
-    newToDoText.value = '';
+    createNewToDo();
+  });
+  renderTheUI(toDos);
 
   deleteButton.addEventListener("click", (event) => {
-      let findLi = document.querySelectorAll("li");
-      let input = document.querySelectorAll("input");
-        for(i = 0; i < input.length; i++){
-          if(input[i].checked === true){
-            input[i].parentNode.remove();
+      event.preventDefault();
+      var todo = document.querySelectorAll("li");
+      var input = document.querySelectorAll("input");
+          for(i = 0; i < input.length; i++){
+              if(input[i].checked === true){
+                      input[i].parentNode.remove();
+              }
           }
-        }
-      });
- });
+  });
 }
+window.onload = function() {
+  onReady();
+};
